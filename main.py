@@ -42,14 +42,14 @@ def mode1(mode: int) -> Union[Matrix, Matrix, int]:
     while True:
         try:
             if mode == 1:
-                key_gen_mode = input("鍵の自動生成を行いますか？[Y/n]>> ")
+                key_gen_mode = utils.y_or_n(input("鍵の自動生成を行いますか？[Y/n]>> "))
             else:
-                key_gen_mode = 'Yes'
+                key_gen_mode = 'y'
 
-            if key_gen_mode in ['', 'y', 'yes', 'Yes', 'YES']:
+            if key_gen_mode == 'y':
                 enc_key, dec_key, n = utils.make_keys()
                 break
-            elif key_gen_mode in ['n', 'N', 'no', 'No', 'NO']:
+            elif key_gen_mode == 'n':
                 n = int(input("n を入力してください。\n>> "))
                 print("[[1, 2], [3, 4]] の順で入力してください。")
                 key_list = utils.input_s(4)
@@ -70,13 +70,13 @@ def mode1(mode: int) -> Union[Matrix, Matrix, int]:
 def mode2(enc_key: Matrix, n: int) -> str:
     while True:
         try:
-            ken_use = input("前回生成した鍵を利用しますか？[Y/n]>> ")
-            if ken_use in ['n', 'N', 'no', 'No', 'NO']:
+            mode = utils.y_or_n(input("前回生成した鍵を利用しますか？[Y/n]>> "))
+            if mode == 'n':
                 n = int(input("n を入力してください。\n>> "))
                 print("[[1, 2], [3, 4]] の順で入力してください。")
                 key_list = utils.input_s(4)
                 enc_key = sympy.Matrix(2, 2, key_list)
-            elif ken_use in ['', 'y', 'yes', 'Yes', 'YES']:
+            elif mode == 'y':
                 pass
             else:
                 raise ValueError("input error!")
@@ -99,13 +99,13 @@ def mode2(enc_key: Matrix, n: int) -> str:
 def mode3(dec_key: Matrix, n: int) -> str:
     while True:
         try:
-            ken_input = input("前回生成した鍵を利用しますか？[Y/n]")
-            if ken_input in ['n', 'N', 'no', 'No', 'NO']:
+            mode = utils.y_or_n(input("前回生成した鍵を利用しますか？[Y/n]"))
+            if mode == 'n':
                 n = int(input("n を入力してください。\n>> "))
                 print("[[1, 2], [3, 4]] の順で入力してください。")
                 key_list = utils.input_s(4)
                 dec_key = sympy.Matrix(2, 2, key_list)
-            elif ken_input in ['', 'y', 'yes', 'Yes', 'YES']:
+            elif mode == 'y':
                 pass
             else:
                 raise ValueError("input error!")

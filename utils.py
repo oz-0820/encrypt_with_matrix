@@ -66,4 +66,10 @@ def input_s(count: int) -> list:
     return data
 
 
+def y_or_n(data: str) -> str:
+    if data in ['n', 'N', 'no', 'No', 'NO']:
+        return 'n'
+    if data in ['', 'y', 'yes', 'Yes', 'YES']:
+        return 'y'
+
 

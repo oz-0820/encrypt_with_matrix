@@ -1,6 +1,5 @@
-import random
-
 import sympy
+
 from sympy import Matrix
 from typing import Union
 
@@ -10,7 +9,6 @@ def make_keys() -> Union[Matrix, Matrix, int]:
         # n = random.randint(1000, 9999)
         n = 95
         enc_key = sympy.randMatrix(2, 2, 0, n)
-        # print(F"{enc_key}, {(enc_key[0] * enc_key[3]) - (enc_key[1] * enc_key[2])}")
         dec_key = enc_key.inv_mod(n)
     except sympy.matrices.common.NonInvertibleMatrixError:
         enc_key, dec_key, n = make_keys()
@@ -40,7 +38,6 @@ def str_to_int(raw_text: str, mode: int) -> Matrix:
         for i in range(text_len):
             int_list.append(ord(text_list[i]) - 32)
         int_mat = sympy.Matrix(2, target_len, int_list)
-    print(int_mat)
     return int_mat
 # in    'abcde'
 # out   [[1, 2, 3], [4, 5, 5]]

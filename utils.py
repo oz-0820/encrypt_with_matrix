@@ -70,23 +70,26 @@ def str_to_int(raw_text: str) -> Matrix:
             int_list[0].append(ord(text_list[i]) - 32)
         else:
             int_list[1].append(ord(text_list[i]) - 32)
-    # for j in range(target_len, text_len):
-    #    int_list[1].append(ord(text_list[j]) - 32)
+
     if len(int_list[0]) != len(int_list[1]) + 1:
         int_list[1].append(0)
     int_list[1].append(text_len)
 
-    data = sympy.Matrix(int_list)
-    return data
+    int_mat = sympy.Matrix(int_list)
+    return int_mat
 # in    'abcde'
 # out   [[1, 2, 3], [4, 5, 5]]
 # in    'abcdef'
 # out   [[1, 2, 3, 4], [5, 6, 0, 6]]
 
-def int_to_char(int_list: list) -> str:
+
+def int_to_str(int_mat: Matrix) -> str:
+    mat_len = len(int_mat)
+    text_len = int_mat[mat_len - 1]
+
     text_list = []
-    for i in range(len(int_list[0]) * 2):
-        text_list.append(chr(int_list[i % 2][i // 2] + 32))
+    for i in range(text_len):
+        text_list.append(chr(int_mat[i] + 32))
     raw_text = "".join(text_list)
     return raw_text
 

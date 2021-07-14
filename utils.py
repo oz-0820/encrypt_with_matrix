@@ -1,77 +1,46 @@
-import utils
+import random
 
 import sympy
 from sympy import Matrix
 from typing import Union
 
 
-def make_keys():
-    e = sympy.Matrix([
-        [sympy.randint(0, 99), sympy.randint(0, 99)],
-        [sympy.randint(0, 99), sympy.randint(0, 99)]
-    ])
-    # sympy.randMatrix(2, 2, 0, 999)
-    return e
+def make_keys() -> Union[Matrix, Matrix, int]:
+    try:
+        # n = random.randint(1000, 9999)
+        n = 95
+        enc_key = sympy.randMatrix(2, 2, 0, n)
+        # print(F"{enc_key}, {(enc_key[0] * enc_key[3]) - (enc_key[1] * enc_key[2])}")
+        dec_key = enc_key.inv_mod(n)
+    except sympy.matrices.common.NonInvertibleMatrixError:
+        enc_key, dec_key, n = make_keys()
+    return enc_key, dec_key, n
 
 
-def make_p(text_list: list) -> None:
-    target_len = len(text_list) // 2
-
-
-"""
-def make_keys(key_len: int, e: int) -> Union[int, int, int, int]:
-    p1_len = (key_len // 2) + 1
-    p2_len = key_len - p1_len
-    prime1 = sympy.randprime(pow(2, p1_len-1), pow(2, p1_len)-1)
-    prime2 = sympy.randprime(pow(2, p2_len-1), pow(2, p2_len)-1)
-
-    if prime1 == prime2:
-        while prime1 == prime2:
-            prime2 = sympy.randprime(pow(2, p2_len - 1), pow(2, p2_len) - 1)
-
-    n = prime1 * prime2
-    lcm = sympy.lcm(prime1-1, prime2-1)
-    d, a, b = sympy.gcdex(e, lcm)
-    d = int(d % lcm)
-
-    return n, e, lcm, d
-"""
-
-
-def e_input() -> int:
-    e = input('eの値を選択してください。(a~g)\na: 3，\nb: 5,\nc: 17,\nd: 257,\ne: 65537,(推奨)\nf: 131073,\ng: 262145,\n>> ')
-    if e == 'a':
-        return 3
-    elif e == 'b':
-        return 5
-    elif e == 'c':
-        return 17
-    elif e == 'd':
-        return 257
-    elif e == 'e':
-        return 65537
-    elif e == 'f':
-        return 131073
-    elif e == 'g':
-        return 262145
-    else:
-        print('入力エラー')
-        return e_input()
-
-
-def str_to_int(raw_text: str) -> Matrix:
+def str_to_int(raw_text: str, mode: int) -> Matrix:
+    # mode == 1 enc
+    # mode == 2 dec
     text_len = len(raw_text)
     text_list = list(raw_text)
-    target_len = text_len // 2 + 1
+    if mode == 1:
+        target_len = text_len // 2 + 1
+    if mode == 2:
+        target_len = text_len // 2
+
     int_list = []
 
-    for i in range(text_len):
-        int_list.append(ord(text_list[i]) - 32)
-    if target_len * 2 != text_len + 1:
-        int_list.append(0)
-    int_list.append(text_len)
-
-    int_mat = sympy.Matrix(2, target_len, int_list)
+    if mode == 1:
+        for i in range(text_len):
+            int_list.append(ord(text_list[i]) - 32)
+        if target_len * 2 != text_len + 1:
+            int_list.append(0)
+        int_list.append(text_len)
+        int_mat = sympy.Matrix(2, target_len, int_list)
+    if mode == 2:
+        for i in range(text_len):
+            int_list.append(ord(text_list[i]) - 32)
+        int_mat = sympy.Matrix(2, target_len, int_list)
+    print(int_mat)
     return int_mat
 # in    'abcde'
 # out   [[1, 2, 3], [4, 5, 5]]
@@ -81,7 +50,7 @@ def str_to_int(raw_text: str) -> Matrix:
 
 def int_to_str(int_mat: Matrix) -> str:
     mat_len = len(int_mat)
-    text_len = int_mat[mat_len - 1]
+    text_len = min(int_mat[mat_len - 1], mat_len)
 
     text_list = []
     for i in range(text_len):
@@ -90,6 +59,11 @@ def int_to_str(int_mat: Matrix) -> str:
     return raw_text
 
 
+def input_s(count: int) -> list:
+    data = []
+    for i in range(count):
+        data.append(input(F"{i + 1}>>"))
+    return data
 
 
 

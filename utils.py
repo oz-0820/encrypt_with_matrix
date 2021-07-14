@@ -60,21 +60,28 @@ def e_input() -> int:
 
 
 def str_to_int(raw_text: str) -> Matrix:
+    text_len = len(raw_text)
     text_list = list(raw_text)
+    target_len = text_len // 2 + 1
     int_list = [[], []]
-    if len(text_list) % 2 == 0:
-        target_len = len(text_list) // 2
-    else:
-        target_len = len(text_list) // 2 + 1
 
-    for i in range(target_len):
-        int_list[0].append(ord(text_list[i]) - 32)
-
-    if len(text_list) % 2 != 0:
+    for i in range(text_len):
+        if i < target_len:
+            int_list[0].append(ord(text_list[i]) - 32)
+        else:
+            int_list[1].append(ord(text_list[i]) - 32)
+    # for j in range(target_len, text_len):
+    #    int_list[1].append(ord(text_list[j]) - 32)
+    if len(int_list[0]) != len(int_list[1]) + 1:
         int_list[1].append(0)
+    int_list[1].append(text_len)
+
     data = sympy.Matrix(int_list)
-    return data  #[[1, 2, 3], [4, 5, 6]]
-# [[1, 3, 5], [2, 4, 6]]
+    return data
+# in    'abcde'
+# out   [[1, 2, 3], [4, 5, 5]]
+# in    'abcdef'
+# out   [[1, 2, 3, 4], [5, 6, 0, 6]]
 
 def int_to_char(int_list: list) -> str:
     text_list = []

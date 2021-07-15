@@ -2,7 +2,6 @@ import sympy
 
 import utils
 
-
 from typing import Union
 from sympy import Matrix
 
@@ -11,21 +10,18 @@ def main() -> None:
     enc_key, dec_key, n = mode1(1)
 
     while True:
-        try:
-            mode = input('\n動作モードを選択してください。\n(鍵生成:1, 暗号化:2, 複合化:3, 現在の値を確認:4, 終了:5)>> ')
-            if mode == '1':
-                enc_key, dec_key, n = mode1(0)
-            elif mode == '2':
-                crypt = mode2(enc_key, n)
-            elif mode == '3':
-                p_text = mode3(dec_key, n)
-            elif mode == '4':
-                mode4(enc_key, dec_key, n)
-            elif mode == '5':
-                break
-            else:
-                raise ValueError
-        except ValueError:
+        mode = input('\n動作モードを選択してください。\n(鍵生成:1, 暗号化:2, 複合化:3, 現在の値を確認:4, 終了:5)>> ')
+        if mode == '1':
+            enc_key, dec_key, n = mode1(0)
+        elif mode == '2':
+            crypt = mode2(enc_key, n)
+        elif mode == '3':
+            p_text = mode3(dec_key, n)
+        elif mode == '4':
+            mode4(enc_key, dec_key, n)
+        elif mode == '5':
+            break
+        else:
             print('入力値が不正です')
 
 
@@ -38,7 +34,7 @@ def mode1(mode: int) -> Union[Matrix, Matrix, int]:
                 key_gen_mode = 'y'
 
             if key_gen_mode == 'y':
-                enc_key, dec_key, n = utils.make_keys()
+                enc_key, dec_key, n = utils.make_keys(None)
                 break
             elif key_gen_mode == 'n':
                 n = int(input("n を入力してください。\n>> "))

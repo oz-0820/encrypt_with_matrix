@@ -3,15 +3,18 @@ import sympy
 from sympy import Matrix
 from typing import Union
 
+from sympy.matrices.common import NonInvertibleMatrixError
 
-def make_keys() -> Union[Matrix, Matrix, int]:
+
+def make_keys(n: int) -> Union[Matrix, Matrix, int]:
+    # n = random.randint(1000, 9999)
+    n = 95
+    enc_key = sympy.randMatrix(2, 2, 0, n)
     try:
-        # n = random.randint(1000, 9999)
-        n = 95
-        enc_key = sympy.randMatrix(2, 2, 0, n)
         dec_key = enc_key.inv_mod(n)
-    except sympy.matrices.common.NonInvertibleMatrixError:
-        enc_key, dec_key, n = make_keys()
+    except NonInvertibleMatrixError:
+        enc_key, dec_key, n = make_keys(n)
+
     return enc_key, dec_key, n
 
 

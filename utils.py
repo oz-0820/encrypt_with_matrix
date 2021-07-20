@@ -23,24 +23,17 @@ def str_to_int(raw_text: str, mode: int) -> Matrix:
     # mode == 2 dec
     text_len = len(raw_text)
     text_list = list(raw_text)
-    if mode == 1:
-        target_len = text_len // 2 + 1
-    if mode == 2:
-        target_len = text_len // 2
 
     int_list = []
 
+    for i in range(text_len):
+        int_list.append(ord(text_list[i]) - 32)
     if mode == 1:
-        for i in range(text_len):
-            int_list.append(ord(text_list[i]) - 32)
-        if target_len * 2 != text_len + 1:
+        if text_len % 2 == 0:
             int_list.append(0)
         int_list.append(text_len)
-        int_mat = sympy.Matrix(2, target_len, int_list)
-    if mode == 2:
-        for i in range(text_len):
-            int_list.append(ord(text_list[i]) - 32)
-        int_mat = sympy.Matrix(2, target_len, int_list)
+
+    int_mat = sympy.Matrix(2, int(len(int_list) / 2), int_list)
     return int_mat
 # in    'abcde'
 # out   [[1, 2, 3], [4, 5, 5]]

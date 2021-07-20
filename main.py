@@ -65,15 +65,15 @@ def mode2(enc_key: Matrix, n: int) -> str:
                 pass
             else:
                 raise ValueError("input error!")
-
+        except ValueError as e:
+            print(e)
+        finally:
             p_int_mat = utils.str_to_int(input("暗号化する平文を入力してください。\n>> "), 1)
             print(F"C ≡　{enc_key} * {p_int_mat} (mod{n})")
             c_int_mat = (enc_key * p_int_mat) % n
             c_text = utils.int_to_str(c_int_mat)
             print(F"Crypt\n{c_text}")
             break
-        except ValueError as e:
-            print(e)
 
     return c_text
 

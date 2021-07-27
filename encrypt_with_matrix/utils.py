@@ -7,7 +7,7 @@ from sympy.matrices.common import NonInvertibleMatrixError
 
 
 def make_keys(n: int) -> Union[Matrix, Matrix, int]:
-    # n = random.randint(1000, 9999)
+    # 現状はASCIIコードの95文字に固定しているが、将来的に可変にしたい
     n = 95
     enc_key = sympy.randMatrix(2, 2, 0, n)
     try:

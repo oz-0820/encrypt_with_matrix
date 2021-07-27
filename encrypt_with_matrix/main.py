@@ -29,14 +29,14 @@ def mode1(mode: int) -> Union[Matrix, Matrix, int]:
     while True:
 
         if mode == 1:
-            key_gen_mode = utils.y_or_n(input("鍵の自動生成を行いますか？[Y/n]>> "))
+            key_gen_mode = utils.y_or_n(input("鍵の自動生成を行いますか？[Y/n]>> "), True)
         else:
-            key_gen_mode = 'y'
+            key_gen_mode = True
 
-        if key_gen_mode == 'y':
+        if key_gen_mode:
             enc_key, dec_key, n = utils.make_keys(0)
             break
-        if key_gen_mode == 'n':
+        else:
             try:
                 n = int(input("n を入力してください。\n>> "))
             except ValueError:
@@ -54,8 +54,8 @@ def mode1(mode: int) -> Union[Matrix, Matrix, int]:
 
 def mode2(enc_key: Matrix, n: int) -> str:
     while True:
-        mode = utils.y_or_n(input("前回生成した鍵を利用しますか？[Y/n]>> "))
-        if mode == 'n':
+        mode = utils.y_or_n(input("前回生成した鍵を利用しますか？[Y/n]>> "), True)
+        if not mode:
             try:
                 n = int(input("n を入力してください。\n>> "))
             except ValueError:
@@ -64,8 +64,6 @@ def mode2(enc_key: Matrix, n: int) -> str:
                 print("[[1, 2], [3, 4]] の順で入力してください。")
                 key_list = utils.input_s(4)
                 enc_key = sympy.Matrix(2, 2, key_list)
-        elif mode == 'y':
-            pass
         p_int_mat = utils.str_to_int(input("暗号化する平文を入力してください。\n>> "), 1)
         print(F"C ≡　{enc_key} * {p_int_mat} (mod{n})")
         c_int_mat = (enc_key * p_int_mat) % n
@@ -77,8 +75,8 @@ def mode2(enc_key: Matrix, n: int) -> str:
 
 
 def mode3(dec_key: Matrix, n: int) -> str:
-    mode = utils.y_or_n(input("前回生成した鍵を利用しますか？[Y/n]"))
-    if mode == 'n':
+    mode = utils.y_or_n(input("前回生成した鍵を利用しますか？[Y/n]"), True)
+    if not mode:
         try:
             n = int(input("n を入力してください。\n>> "))
         except ValueError:

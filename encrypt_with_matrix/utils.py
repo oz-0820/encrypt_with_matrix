@@ -59,12 +59,18 @@ def input_s(count: int) -> list:
     return data
 
 
-def y_or_n(data: str) -> str:
-    if data in ['n', 'N', 'no', 'No', 'NO']:
-        return 'n'
-    elif data in ['', 'y', 'yes', 'Yes', 'YES']:
-        return 'y'
+def y_or_n(data: str, default: bool) -> bool:
+    if data == "":
+        return default
+    elif data in ['n', 'N', 'no', 'No', 'NO']:
+        return False
+    elif data in ['y', 'yes', 'Yes', 'YEs', 'YES']:
+        return True
     else:
-        return None
+        if default:
+            yn = '[Y/n]'
+        else:
+            yn = '[y/N]'
+        return y_or_n(input(F"もう一度入力してください{yn}>> "), default)
 
 
